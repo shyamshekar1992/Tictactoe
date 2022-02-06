@@ -1,27 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
   View,
-  Dimensions,
   Button,
-  TouchableOpacity
-} from 'react-native';
+  TouchableOpacity,
+} from "react-native";
 
-const BackgroundColor = "212845";
 const ForegroundColor = "#000000";
 
-
-const GridItem = ({
-  state,
-  index,
-  onPress,
-  isWinningIndex,
-}) => (
+// component for grid box
+const GridItem = ({ state, index, onPress, isWinningIndex }) => (
   <TouchableOpacity
     onPress={(e) => onPress(index)}
     style={{
@@ -57,9 +46,6 @@ const GridItem = ({
   </TouchableOpacity>
 );
 
-
-
-
 const App = () => {
   const [turn, setTurn] = useState("CROSS");
   const [grids, setGrids] = useState([
@@ -73,13 +59,11 @@ const App = () => {
     "EMPTY",
     "EMPTY",
   ]);
-  const [gameState, setGameState] = useState(
-    ""
-  );
+  const [gameState, setGameState] = useState("");
   const [winner, setWinner] = useState(undefined);
   const [winningIndexes, setWinningIndexes] = useState([]);
 
-
+  // checks the if there is a winner or not
   useEffect(() => {
     if (grids.includes("CROSS") === false && grids.includes("ZERO") === false) {
       return;
@@ -94,67 +78,76 @@ const App = () => {
     }
   }, [grids]);
 
-
+  // checks the possible 8 winning combination by comparing the values of horizontal,vertical and diagnol winning combination
   const checkWinner = () => {
-    if (grids[0] !== "EMPTY" &&
+    if (
+      grids[0] !== "EMPTY" &&
       grids[0] === grids[1] &&
-      grids[1] === grids[2]) {
+      grids[1] === grids[2]
+    ) {
       setWinner(grids[0]);
       setWinningIndexes([0, 1, 2]);
       return true;
-    }
-    else if (grids[3] !== "EMPTY" &&
+    } else if (
+      grids[3] !== "EMPTY" &&
       grids[3] === grids[4] &&
-      grids[4] === grids[5]) {
+      grids[4] === grids[5]
+    ) {
       setWinner(grids[3]);
       setWinningIndexes([3, 4, 5]);
       return true;
-    }
-    else if (grids[6] !== "EMPTY" &&
+    } else if (
+      grids[6] !== "EMPTY" &&
       grids[6] === grids[7] &&
-      grids[7] === grids[8]) {
+      grids[7] === grids[8]
+    ) {
       setWinner(grids[6]);
       setWinningIndexes([6, 7, 8]);
       return true;
-    }
-    else if (grids[0] !== "EMPTY" &&
+    } else if (
+      grids[0] !== "EMPTY" &&
       grids[0] === grids[3] &&
-      grids[3] === grids[6]) {
+      grids[3] === grids[6]
+    ) {
       setWinner(grids[0]);
       setWinningIndexes([0, 3, 6]);
       return true;
-    }
-    else if (grids[1] !== "EMPTY" &&
+    } else if (
+      grids[1] !== "EMPTY" &&
       grids[1] === grids[4] &&
-      grids[4] === grids[7]) {
+      grids[4] === grids[7]
+    ) {
       setWinner(grids[1]);
       setWinningIndexes([1, 4, 7]);
       return true;
-    }
-    else if (grids[2] !== "EMPTY" &&
+    } else if (
+      grids[2] !== "EMPTY" &&
       grids[2] === grids[5] &&
-      grids[5] === grids[8]) {
+      grids[5] === grids[8]
+    ) {
       setWinner(grids[2]);
       setWinningIndexes([2, 5, 8]);
       return true;
-    }
-    else if (grids[0] !== "EMPTY" &&
+    } else if (
+      grids[0] !== "EMPTY" &&
       grids[0] === grids[4] &&
-      grids[4] === grids[8]) {
+      grids[4] === grids[8]
+    ) {
       setWinner(grids[0]);
       setWinningIndexes([0, 4, 8]);
       return true;
-    }
-    else if (grids[2] !== "EMPTY" &&
+    } else if (
+      grids[2] !== "EMPTY" &&
       grids[2] === grids[4] &&
-      grids[4] === grids[6]) {
+      grids[4] === grids[6]
+    ) {
       setWinner(grids[2]);
       setWinningIndexes([2, 4, 6]);
       return true;
     }
     return false;
   };
-
+  // to rest the game and set everything to empty
   const onReset = () => {
     setTurn("CROSS");
     setGrids([
@@ -172,8 +165,8 @@ const App = () => {
     setWinner(undefined);
     setWinningIndexes([]);
   };
-
-  const onGridPress = (index, byBot) => {
+  // checks and updates the grid value of either x or o
+  const onGridPress = (index) => {
     const canGameContinue = gameState.length === 0;
     let isValidTurn = true;
 
@@ -185,7 +178,6 @@ const App = () => {
       setGrids([...newGrids]);
     }
   };
-
 
   return (
     <SafeAreaView>
@@ -201,10 +193,10 @@ const App = () => {
               ? "X's Turn"
               : "O's Turn"
             : gameState === "Game Over"
-              ? winner === "CROSS"
-                ? " X Won "
-                : "O Won"
-              : " Draw "}
+            ? winner === "CROSS"
+              ? " X Won "
+              : "O Won"
+            : " Draw "}
         </Text>
         <View
           style={{
@@ -283,7 +275,7 @@ const App = () => {
             </View>
           </View>
         </View>
-        <View style={{ marginTop: 40, width: '100%', paddingHorizontal: 40 }}>
+        <View style={{ marginTop: 40, width: "100%", paddingHorizontal: 40 }}>
           <Button
             title={"Reset"}
             onPress={onReset}
@@ -291,29 +283,8 @@ const App = () => {
           />
         </View>
       </View>
-
-
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
